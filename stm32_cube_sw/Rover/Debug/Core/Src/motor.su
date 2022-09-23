@@ -1,0 +1,4 @@
+../Core/Src/motor.cpp:11:6:void Motor::fun()	16	static
+../Core/Src/motor.cpp:16:6:void Motor::PID_Set_Gains(float, float, float)	24	static
+../Core/Src/motor.cpp:22:6:void Motor::PID_Init(float, float, float, float)	32	static
+../Core/Src/motor.cpp:36:7:float Motor::PID_Controller(float)	40	static
