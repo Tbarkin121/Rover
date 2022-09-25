@@ -19,6 +19,7 @@
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 #include "can.h"
+#include "spi.h"
 #include "usart.h"
 #include "gpio.h"
 
@@ -45,16 +46,37 @@
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */
+uint32_t loop_count = 0;
+uint32_t last_spi_msg = 0;
+float dt = 0.001;
+
 CAN_TxHeaderTypeDef   TxHeader;
 CAN_RxHeaderTypeDef   RxHeader;
 uint32_t              TxMailbox;
 uint8_t               TxData[8];
 uint8_t				  RxData[8];
-uint8_t 			  datacheck;
 uint32_t count = 0;
 
 Motor motor1;
 Motor motor2;
+Motor motor3;
+Motor motor4;
+
+typedef struct
+{
+  int16_t vel_t_1;    	 	/*!< Specifies the target velocity for motor 1*/
+  int16_t vel_t_2;    	 	/*!< Specifies the target velocity for motor 2*/
+  int16_t vel_t_3;     		/*!< Specifies the target velocity for motor 3*/
+  int16_t vel_t_4;     		/*!< Specifies the target velocity for motor 4*/
+
+} VelocityTargetMsg;
+
+VelocityTargetMsg vel_targ;
+
+#define SPI_BUFFER_SIZE 8
+uint8_t spi_buf[SPI_BUFFER_SIZE];
+HAL_SPI_StateTypeDef spi_state;
+
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -75,7 +97,7 @@ void SystemClock_Config(void);
 int main(void)
 {
   /* USER CODE BEGIN 1 */
-  datacheck = 0;
+
   /* USER CODE END 1 */
 
   /* MCU Configuration--------------------------------------------------------*/
@@ -98,6 +120,7 @@ int main(void)
   MX_GPIO_Init();
   MX_USART2_UART_Init();
   MX_CAN1_Init();
+  MX_SPI2_Init();
   /* USER CODE BEGIN 2 */
 
   CAN_FilterTypeDef sFilterConfig;
@@ -122,73 +145,104 @@ int main(void)
   TxHeader.DLC = 8; 					//Data Length
   TxHeader.TransmitGlobalTime = DISABLE;
 
-  float current1 = 1.0;
-  float current2 = 1.0;
+  float current1 = 0.0;
+  float current2 = 0.0;
+  float current3 = 0.0;
+  float current4 = 0.0;
   float target_vel1 = 0.0;
   float target_vel2 = 0.0;
-  int16_t current_word1 = (int16_t)(current1/20.0*16384);
-  int16_t current_word2 = (int16_t)(current2/20.0*16384);
-
-  TxData[0] = current_word1 >> 8;
-  TxData[1] = (int8_t)(current_word1 & 0x00ff);
-  TxData[2] = current_word2 >> 8;
-  TxData[3] = (int8_t)(current_word2 & 0x00ff);
-  TxData[4] = current_word1 >> 8;
-  TxData[5] = (int8_t)(current_word1 & 0x00ff);
-  TxData[6] = current_word2 >> 8;
-  TxData[7] = (int8_t)(current_word2 & 0x00ff);
-
+  int16_t current_word1 = 0.0;
+  int16_t current_word2 = 0.0;
+  int16_t current_word3 = 0.0;
+  int16_t current_word4 = 0.0;
 
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
-  uint32_t loop_count = 0;
-  float dt = 0.001;
 
-  motor1.PID_Init(0.001, 0.000001, 0.0001, 1.0);
-  motor2.PID_Init(0.001, 0.000001, 0.0001, 1.0);
+  float kp_gain = 0.0001;
+  float ki_gain = 0.0001;
+  float kd_gain = 0.01;
+  float max_current = 1.0;
+  motor1.PID_Init(kp_gain, ki_gain, kd_gain, max_current);
+  motor2.PID_Init(kp_gain, ki_gain, kd_gain, max_current);
+  motor3.PID_Init(kp_gain, ki_gain, kd_gain, max_current);
+  motor4.PID_Init(kp_gain, ki_gain, kd_gain, max_current);
+
   while (1)
   {
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-//	  if(datacheck)
-//	  {
-//		  HAL_Delay(2);
-//	  }
+	  spi_state = HAL_SPI_GetState(&hspi2);
+	  if(spi_state = HAL_SPI_STATE_READY)
+		  HAL_SPI_Receive_IT(&hspi2, (uint8_t *)spi_buf, SPI_BUFFER_SIZE);
 
-	  if(dt*loop_count < 10)
-	  {
-		  float freq = 0.25;
-	      target_vel1 = sinf(2.0*M_PI*loop_count*dt*freq)*4000;
-		  target_vel2 = -target_vel1;
-//		  current = sinf(2.0*M_PI*loop_count*dt)*1.0;
-		  current1 = motor1.PID_Controller(target_vel1 - motor1.state.Vel);
-		  current2 = motor2.PID_Controller(target_vel2 - motor2.state.Vel);
-	  }
-	  else if (dt*loop_count < 15)
-	  {
-		  target_vel1 = 2000;
-		  target_vel2 = -target_vel1;
-		  current1 = motor1.PID_Controller(target_vel1 - motor1.state.Vel);
-		  current2 = motor2.PID_Controller(target_vel2 - motor2.state.Vel);
-	  }
-	  else
+	  if( (loop_count - last_spi_msg)*dt > 1 || loop_count*dt < 1)
 	  {
 		  current1 = 0.0;
 		  current2 = 0.0;
+		  current3 = 0.0;
+		  current4 = 0.0;
 	  }
+	  else
+	  {
+		  current1 = motor1.PID_Controller(vel_targ.vel_t_1);
+		  current2 = motor2.PID_Controller(vel_targ.vel_t_2);
+		  current3 = motor3.PID_Controller(vel_targ.vel_t_3);
+		  current4 = motor4.PID_Controller(vel_targ.vel_t_4);
+	  }
+//	  else if(dt*loop_count < 10)
+//	  {
+//		  float freq = 0.25;
+//	      target_vel1 = sinf(2.0*M_PI*loop_count*dt*freq)*2000+2000;
+//		  target_vel2 = -target_vel1;
+////		  current = sinf(2.0*M_PI*loop_count*dt)*1.0;
+//		  current1 = motor1.PID_Controller(target_vel1);
+////		  current2 = motor2.PID_Controller(target_vel1);
+////		  current3 = motor3.PID_Controller(target_vel2);
+//		  current2 = motor2.PID_Controller(target_vel2);
+//		  current3 = motor3.PID_Controller(target_vel1);
+//		  current4 = motor4.PID_Controller(target_vel2);
+//	  }
+//	  else if (dt*loop_count < 12)
+//	  {
+//		  target_vel1 = 2000;
+//		  target_vel2 = -target_vel1;
+//		  current1 = motor1.PID_Controller(target_vel1);
+//		  //		  current2 = motor2.PID_Controller(target_vel1);
+//		  //		  current3 = motor3.PID_Controller(target_vel2);
+//		  current2 = motor2.PID_Controller(target_vel2);
+//		  current3 = motor3.PID_Controller(target_vel1);
+//		  current4 = motor4.PID_Controller(target_vel2);
+//	  }
+//	  else
+//	  {
+//		  current1 = 0.0;
+//		  current2 = 0.0;
+//		  current3 = 0.0;
+//		  current4 = 0.0;
+//
+//		  motor1.PID_Set_Gains(kp_gain, ki_gain, kd_gain);
+//		  motor2.PID_Set_Gains(kp_gain, ki_gain, kd_gain);
+//		  motor3.PID_Set_Gains(kp_gain, ki_gain, kd_gain);
+//		  motor4.PID_Set_Gains(kp_gain, ki_gain, kd_gain);
+//
+//
+//	  }
 	  current_word1 = (int16_t)(current1/20.0*16384);
 	  current_word2 = (int16_t)(current2/20.0*16384);
+	  current_word3 = (int16_t)(current3/20.0*16384);
+	  current_word4 = (int16_t)(current4/20.0*16384);
 	  TxData[0] = current_word1 >> 8;
 	  TxData[1] = (int8_t)(current_word1 & 0x00ff);
 	  TxData[2] = current_word2 >> 8;
 	  TxData[3] = (int8_t)(current_word2 & 0x00ff);
-//	  TxData[4] = current_word >> 8;
-//	  TxData[5] = (int8_t)(current_word & 0x00ff);
-//	  TxData[6] = current_word >> 8;
-//	  TxData[7] = (int8_t)(current_word & 0x00ff);
+	  TxData[4] = current_word3 >> 8;
+	  TxData[5] = (int8_t)(current_word3 & 0x00ff);
+	  TxData[6] = current_word4 >> 8;
+	  TxData[7] = (int8_t)(current_word4 & 0x00ff);
 
 	  HAL_GPIO_TogglePin(LD2_GPIO_Port, LD2_Pin);
 
@@ -262,6 +316,10 @@ void SystemClock_Config(void)
 }
 
 /* USER CODE BEGIN 4 */
+/**
+  * @brief  CAN Receive Callback Function
+  * @retval None
+  */
 void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan)
 {
 	count++;
@@ -278,12 +336,39 @@ void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan)
 	  motor1.state.Temp = RxData[6];
   }
   else if((RxHeader.StdId == 0x202))
-  {
-	  motor2.state.Ang = RxData[0]<<8 | RxData[1];
-	  motor2.state.Vel = RxData[2]<<8 | RxData[3];
-	  motor2.state.Torq = RxData[4]<<8 | RxData[5];
-	  motor2.state.Temp = RxData[6];
-  }
+    {
+  	  motor2.state.Ang = RxData[0]<<8 | RxData[1];
+  	  motor2.state.Vel = RxData[2]<<8 | RxData[3];
+  	  motor2.state.Torq = RxData[4]<<8 | RxData[5];
+  	  motor2.state.Temp = RxData[6];
+    }
+  else if((RxHeader.StdId == 0x203))
+    {
+  	  motor3.state.Ang = RxData[0]<<8 | RxData[1];
+  	  motor3.state.Vel = RxData[2]<<8 | RxData[3];
+  	  motor3.state.Torq = RxData[4]<<8 | RxData[5];
+  	  motor3.state.Temp = RxData[6];
+    }
+  else if((RxHeader.StdId == 0x204))
+    {
+  	  motor4.state.Ang = RxData[0]<<8 | RxData[1];
+  	  motor4.state.Vel = RxData[2]<<8 | RxData[3];
+  	  motor4.state.Torq = RxData[4]<<8 | RxData[5];
+  	  motor4.state.Temp = RxData[6];
+    }
+}
+
+/**
+  * @brief  SPI Receive Callback Function
+  * @retval None
+  */
+void HAL_SPI_RxCpltCallback(SPI_HandleTypeDef * hspi)
+{
+	last_spi_msg = loop_count;
+	vel_targ.vel_t_1 = spi_buf[0] | spi_buf[1]<<8;
+	vel_targ.vel_t_2 = spi_buf[2] | spi_buf[3]<<8;
+	vel_targ.vel_t_3 = spi_buf[4] | spi_buf[5]<<8;
+	vel_targ.vel_t_4 = spi_buf[6] | spi_buf[7]<<8;
 }
 /* USER CODE END 4 */
 

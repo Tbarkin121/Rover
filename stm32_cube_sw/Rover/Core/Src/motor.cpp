@@ -33,9 +33,9 @@ void Motor::PID_Init(float kp, float ki, float kd, float out_thresh)
 	output = 0.0;
 	output_threshold = out_thresh;
 }
-float Motor::PID_Controller(float error)
+float Motor::PID_Controller(float target)
 {
-
+	float error = target - state.Vel;
 //	y[n] = y[n-1] + A0 * x[n] + A1 * x[n-1] + A2 * x[n-2];
 
 	output = pid_state[2] + A0 * error + A1 * pid_state[0] + A2 * pid_state[1];
