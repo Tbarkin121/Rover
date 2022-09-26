@@ -36,6 +36,9 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
+#define SPI_BUFFER_SIZE 8			// Bytes
+#define STARTUP_TIME 1				// Seconds
+#define CTRL_TIMEOUT 1 				// Seconds
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -73,7 +76,7 @@ typedef struct
 
 VelocityTargetMsg vel_targ;
 
-#define SPI_BUFFER_SIZE 8
+
 uint8_t spi_buf[SPI_BUFFER_SIZE];
 HAL_SPI_StateTypeDef spi_state;
 
@@ -164,7 +167,7 @@ int main(void)
   float kp_gain = 0.0001;
   float ki_gain = 0.0001;
   float kd_gain = 0.01;
-  float max_current = 1.0;
+  float max_current = 2.0;
   motor1.PID_Init(kp_gain, ki_gain, kd_gain, max_current);
   motor2.PID_Init(kp_gain, ki_gain, kd_gain, max_current);
   motor3.PID_Init(kp_gain, ki_gain, kd_gain, max_current);
@@ -179,8 +182,12 @@ int main(void)
 	  if(spi_state = HAL_SPI_STATE_READY)
 		  HAL_SPI_Receive_IT(&hspi2, (uint8_t *)spi_buf, SPI_BUFFER_SIZE);
 
-	  if( (loop_count - last_spi_msg)*dt > 1 || loop_count*dt < 1)
+	  if( (loop_count - last_spi_msg)*dt > CTRL_TIMEOUT || loop_count*dt < STARTUP_TIME)
 	  {
+		  vel_targ.vel_t_1 = 0.0;
+		  vel_targ.vel_t_2 = 0.0;
+		  vel_targ.vel_t_3 = 0.0;
+		  vel_targ.vel_t_4 = 0.0;
 		  current1 = 0.0;
 		  current2 = 0.0;
 		  current3 = 0.0;
