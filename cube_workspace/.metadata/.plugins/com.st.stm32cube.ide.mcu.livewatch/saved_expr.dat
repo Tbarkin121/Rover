@@ -2,3 +2,4 @@ spi_buf
 vel_targ
 motor1
 spi_state
+bits_to_send

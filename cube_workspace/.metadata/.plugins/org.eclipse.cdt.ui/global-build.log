@@ -1,31 +1,63 @@
-20:26:15 **** Incremental Build of configuration Debug for project Rover ****
+15:17:05 **** Incremental Build of configuration Debug for project NeoPixelRing ****
 make -j16 all 
-arm-none-eabi-g++ "../Core/Src/main.cpp" -mcpu=cortex-m4 -std=gnu++14 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F446xx -c -I../Core/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -fno-exceptions -fno-rtti -fno-use-cxa-atexit -Wall -fstack-usage -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
-../Core/Src/main.cpp: In function 'int main()':
-../Core/Src/main.cpp:182:17: warning: suggest parentheses around assignment used as truth value [-Wparentheses]
-  182 |    if(spi_state = HAL_SPI_STATE_READY)
-      |       ~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~
-../Core/Src/main.cpp:155:9: warning: unused variable 'target_vel1' [-Wunused-variable]
-  155 |   float target_vel1 = 0.0;
-      |         ^~~~~~~~~~~
-../Core/Src/main.cpp:156:9: warning: unused variable 'target_vel2' [-Wunused-variable]
-  156 |   float target_vel2 = 0.0;
-      |         ^~~~~~~~~~~
-arm-none-eabi-g++ -o "Rover.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\Plutonium\MachineLearning\git\Rover\stm32_cube_sw\Rover\STM32F446RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="Rover.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -lstdc++ -lsupc++ -Wl,--end-group
-Finished building target: Rover.elf
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32G431xx -c -I../Core/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32G4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+arm-none-eabi-gcc -o "NeoPixelRing.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\Plutonium\MachineLearning\git\Rover\cube_workspace\NeoPixelRing\STM32G431KBTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="NeoPixelRing.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: NeoPixelRing.elf
  
-arm-none-eabi-size   Rover.elf 
-arm-none-eabi-objdump -h -S  Rover.elf  > "Rover.list"
+arm-none-eabi-size   NeoPixelRing.elf 
+arm-none-eabi-objdump -h -S  NeoPixelRing.elf  > "NeoPixelRing.list"
    text	   data	    bss	    dec	    hex	filename
-  19812	     24	   2096	  21932	   55ac	Rover.elf
+  29156	     20	   3156	  32332	   7e4c	NeoPixelRing.elf
 Finished building: default.size.stdout
  
-Finished building: Rover.list
+Finished building: NeoPixelRing.list
  
-20:26:17 **** Incremental Build of configuration Debug for project Rover ****
+15:17:11 **** Incremental Build of configuration Debug for project NeoPixelRing ****
 make -j16 all 
-arm-none-eabi-size   Rover.elf 
+arm-none-eabi-size   NeoPixelRing.elf 
    text	   data	    bss	    dec	    hex	filename
-  19812	     24	   2096	  21932	   55ac	Rover.elf
+  29156	     20	   3156	  32332	   7e4c	NeoPixelRing.elf
 Finished building: default.size.stdout
+ 
+15:17:40 **** Incremental Build of configuration Debug for project NeoPixelRing ****
+make -j16 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32G431xx -c -I../Core/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32G4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+arm-none-eabi-gcc -o "NeoPixelRing.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\Plutonium\MachineLearning\git\Rover\cube_workspace\NeoPixelRing\STM32G431KBTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="NeoPixelRing.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: NeoPixelRing.elf
+ 
+arm-none-eabi-size   NeoPixelRing.elf 
+arm-none-eabi-objdump -h -S  NeoPixelRing.elf  > "NeoPixelRing.list"
+   text	   data	    bss	    dec	    hex	filename
+  29164	     20	   3156	  32340	   7e54	NeoPixelRing.elf
+Finished building: default.size.stdout
+ 
+Finished building: NeoPixelRing.list
+ 
+15:18:12 **** Incremental Build of configuration Debug for project NeoPixelRing ****
+make -j16 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32G431xx -c -I../Core/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32G4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+arm-none-eabi-gcc -o "NeoPixelRing.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\Plutonium\MachineLearning\git\Rover\cube_workspace\NeoPixelRing\STM32G431KBTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="NeoPixelRing.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: NeoPixelRing.elf
+ 
+arm-none-eabi-size   NeoPixelRing.elf 
+arm-none-eabi-objdump -h -S  NeoPixelRing.elf  > "NeoPixelRing.list"
+   text	   data	    bss	    dec	    hex	filename
+  29156	     20	   3156	  32332	   7e4c	NeoPixelRing.elf
+Finished building: default.size.stdout
+ 
+Finished building: NeoPixelRing.list
+ 
+15:19:20 **** Incremental Build of configuration Debug for project NeoPixelRing ****
+make -j16 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32G431xx -c -I../Core/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32G4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+arm-none-eabi-gcc -o "NeoPixelRing.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\Plutonium\MachineLearning\git\Rover\cube_workspace\NeoPixelRing\STM32G431KBTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="NeoPixelRing.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: NeoPixelRing.elf
+ 
+arm-none-eabi-size   NeoPixelRing.elf 
+arm-none-eabi-objdump -h -S  NeoPixelRing.elf  > "NeoPixelRing.list"
+   text	   data	    bss	    dec	    hex	filename
+  29156	     20	   3156	  32332	   7e4c	NeoPixelRing.elf
+Finished building: default.size.stdout
+ 
+Finished building: NeoPixelRing.list
  

@@ -106,7 +106,11 @@ int main(void)
   /* MCU Configuration--------------------------------------------------------*/
 
   /* Reset of all peripherals, Initializes the Flash interface and the Systick. */
-  HAL_Init();
+pinout
+
+
+
+HAL_Init();
 
   /* USER CODE BEGIN Init */
 
@@ -167,7 +171,7 @@ int main(void)
   float kp_gain = 0.0001;
   float ki_gain = 0.0001;
   float kd_gain = 0.01;
-  float max_current = 2.0;
+  float max_current = 5.0;
   motor1.PID_Init(kp_gain, ki_gain, kd_gain, max_current);
   motor2.PID_Init(kp_gain, ki_gain, kd_gain, max_current);
   motor3.PID_Init(kp_gain, ki_gain, kd_gain, max_current);

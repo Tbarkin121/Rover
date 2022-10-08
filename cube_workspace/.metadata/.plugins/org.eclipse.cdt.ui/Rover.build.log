@@ -1,10 +1,10 @@
-20:26:17 **** Incremental Build of configuration Debug for project Rover ****
+18:25:03 **** Incremental Build of configuration Debug for project Rover ****
 make -j16 all 
 arm-none-eabi-size   Rover.elf 
    text	   data	    bss	    dec	    hex	filename
-  19812	     24	   2096	  21932	   55ac	Rover.elf
+  19816	     24	   2096	  21936	   55b0	Rover.elf
 Finished building: default.size.stdout
  
 
-20:26:17 Build Finished. 0 errors, 0 warnings. (took 239ms)
+18:25:04 Build Finished. 0 errors, 0 warnings. (took 223ms)
 

@@ -90,3 +90,57 @@ Command-line arguments:  -os win32 -ws win32 -arch x86_64
 
 !ENTRY com.st.stm32cube.ide.mcu.ide 1 1 2022-09-24 18:35:28.356
 !MESSAGE Started RMI Server, listening on port 41337
+!SESSION 2022-09-27 18:23:15.981 -----------------------------------------------
+eclipse.buildId=Version 1.10.1
+java.version=11.0.14.1
+java.vendor=Eclipse Adoptium
+BootLoader constants: OS=win32, ARCH=x86_64, WS=win32, NL=en_US
+Command-line arguments:  -os win32 -ws win32 -arch x86_64
+
+!ENTRY com.st.stm32cube.ide.mcu.informationcenter 4 4 2022-09-27 18:23:55.879
+!MESSAGE CubeMX plugin appears to be active, Log4j initialization might be too late.
+
+!ENTRY com.st.stm32cube.ide.mcu.informationcenter 1 1 2022-09-27 18:23:55.944
+!MESSAGE Log4j initialized with config file C:\Users\Plutonium\MachineLearning\git\Rover\cube_workspace\.metadata\.log4j.xml
+
+!ENTRY com.st.stm32cube.ide.mcu.ide 1 1 2022-09-27 18:24:05.322
+!MESSAGE Started RMI Server, listening on port 41337
+!SESSION 2022-10-07 00:16:28.720 -----------------------------------------------
+eclipse.buildId=Version 1.10.1
+java.version=11.0.14.1
+java.vendor=Eclipse Adoptium
+BootLoader constants: OS=win32, ARCH=x86_64, WS=win32, NL=en_US
+Command-line arguments:  -os win32 -ws win32 -arch x86_64
+
+!ENTRY com.st.stm32cube.ide.mcu.informationcenter 4 4 2022-10-07 00:16:45.989
+!MESSAGE CubeMX plugin appears to be active, Log4j initialization might be too late.
+
+!ENTRY com.st.stm32cube.ide.mcu.informationcenter 1 1 2022-10-07 00:16:46.051
+!MESSAGE Log4j initialized with config file C:\Users\Plutonium\MachineLearning\git\Rover\cube_workspace\.metadata\.log4j.xml
+
+!ENTRY com.st.stm32cube.ide.mcu.ide 1 1 2022-10-07 00:16:55.587
+!MESSAGE Started RMI Server, listening on port 41337
+
+!ENTRY org.eclipse.cdt.core 1 0 2022-10-07 00:21:00.637
+!MESSAGE Indexed 'NeoPixelRing' (23 sources, 83 headers) in 2.75 sec: 5,437 declarations; 26,936 references; 0 unresolved inclusions; 1 syntax errors; 2 unresolved names (0.0062%)
+!SESSION 2022-10-07 00:58:55.176 -----------------------------------------------
+eclipse.buildId=Version 1.10.1
+java.version=11.0.14.1
+java.vendor=Eclipse Adoptium
+BootLoader constants: OS=win32, ARCH=x86_64, WS=win32, NL=en_US
+Command-line arguments:  -os win32 -ws win32 -arch x86_64
+
+!ENTRY com.st.stm32cube.ide.mcu.informationcenter 4 4 2022-10-07 00:59:08.275
+!MESSAGE CubeMX plugin appears to be active, Log4j initialization might be too late.
+
+!ENTRY com.st.stm32cube.ide.mcu.informationcenter 1 1 2022-10-07 00:59:08.332
+!MESSAGE Log4j initialized with config file C:\Users\Plutonium\MachineLearning\git\Rover\cube_workspace\.metadata\.log4j.xml
+
+!ENTRY com.st.stm32cube.ide.mcu.ide 1 1 2022-10-07 00:59:17.078
+!MESSAGE Started RMI Server, listening on port 41337
+
+!ENTRY org.eclipse.cdt.core 1 0 2022-10-07 02:32:41.622
+!MESSAGE Indexed 'NeoPixelRing' (25 sources, 120 headers) in 2.96 sec: 13,993 declarations; 80,728 references; 3 unresolved inclusions; 46 syntax errors; 171 unresolved names (0.18%)
+
+!ENTRY org.eclipse.cdt.core 1 0 2022-10-07 02:33:52.322
+!MESSAGE Indexed 'NeoPixelRing' (26 sources, 120 headers) in 1.63 sec: 14,041 declarations; 81,288 references; 3 unresolved inclusions; 46 syntax errors; 171 unresolved names (0.18%)
